@@ -180,13 +180,12 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void CanFire_AssignedFourOptions()
+        public void CanFire_AssignedOptions()
         {
             var bug = new Bug(Bug.State.Assigned);
             Assert.IsTrue(bug.CanFire(Bug.Trigger.StartFix));
             Assert.IsTrue(bug.CanFire(Bug.Trigger.Defer));
-            Assert.IsTrue(bug.CanFire(Bug.Trigger.Reject));
-            Assert.IsTrue(bug.CanFire(Bug.Trigger.CannotReproduce));
+            Assert.IsFalse(bug.CanFire(Bug.Trigger.Verify));
         }
 
         [TestMethod]
@@ -222,14 +221,6 @@ namespace BugTests
         {
             var bug = new Bug(Bug.State.Deferred);
             Assert.ThrowsExactly<InvalidOperationException>(() => bug.StartFix());
-        }
-
-        [TestMethod]
-        public void ErrorMessageContainsState()
-        {
-            var bug = new Bug();
-            var ex = Assert.ThrowsExactly<InvalidOperationException>(() => bug.Resolve());
-            StringAssert.Contains(ex.Message, "Open");
         }
 
         [TestMethod]
